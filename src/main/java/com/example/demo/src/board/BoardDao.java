@@ -1,5 +1,6 @@
 package com.example.demo.src.board;
 
+import com.example.demo.src.board.model.GetBoardRes;
 import com.example.demo.src.board.model.PostBoardReq;
 import com.example.demo.src.user.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,30 @@ public class BoardDao {
 
         String lastInserIdQuery = "select last_insert_id()"; // 가장 마지막에 삽입된(생성된) id값은 가져온다.
         return this.jdbcTemplate.queryForObject(lastInserIdQuery, int.class); // 해당 쿼리문의 결과 마지막으로 삽인된 유저의 boardIdx번호를 반환한다.
+    }
+
+    // Board 테이블에 존재하는 전체 게시판 정보 조회
+    public List<GetBoardRes> getBoards() {
+        String getUsersQuery = "select * from Board"; //User 테이블에 존재하는 모든 회원들의 정보를 조회하는 쿼리
+        return this.jdbcTemplate.query(getUsersQuery,
+                (rs, rowNum) -> new GetBoardRes(
+                        rs.getInt("boardIdx"),
+                        rs.getInt("userIdx"),
+                        rs.getString("boardName"),
+                        rs.getString("boardInfo")) // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
+        ); // 복수개의 게시판들을 얻기 위해 jdbcTemplate 함수(Query, 객체 매핑 정보)의 결과 반환(동적쿼리가 아니므로 Parmas부분이 없음)
+    }
+
+    // 해당 boardname을 갖는 게시판 정보 조회
+    public List<GetBoardRes> getBoardsByBoardname(String boardname) {
+        String getBoardsByBoardnameQuery = "select * from Board where boardName =?"; // 해당 이메일을 만족하는 유저를 조회하는 쿼리문
+        String getBoardsByBoardnameParams = boardname;
+        return this.jdbcTemplate.query(getBoardsByBoardnameQuery,
+                (rs, rowNum) -> new GetBoardRes(
+                        rs.getInt("boardIdx"),
+                        rs.getInt("userIdx"),
+                        rs.getString("boardName"),
+                        rs.getString("boardInfo")), // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
+                getBoardsByBoardnameParams); // 해당 닉네임을 갖는 모든 User 정보를 얻기 위해 jdbcTemplate 함수(Query, 객체 매핑 정보, Params)의 결과 반환
     }
 }

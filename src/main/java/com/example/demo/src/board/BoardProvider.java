@@ -1,6 +1,7 @@
 package com.example.demo.src.board;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.secret.Secret;
+import com.example.demo.src.board.model.GetBoardRes;
 import com.example.demo.src.user.UserDao;
 import com.example.demo.src.user.model.*;
 import com.example.demo.utils.AES128;
@@ -35,4 +36,23 @@ public class BoardProvider {
     }
     // ******************************************************************************
 
+    // Board 정보를 조회
+    public List<GetBoardRes> getBoards() throws BaseException {
+        try {
+            List<GetBoardRes> getBoardRes = boardDao.getBoards();
+            return getBoardRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    // 해당 boardName을 갖는 Board들의 정보 조회
+    public List<GetBoardRes> getBoardsByBoardname(String boardname) throws BaseException {
+        try {
+            List<GetBoardRes> getBoardsRes = boardDao.getBoardsByBoardname(boardname);
+            return getBoardsRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
