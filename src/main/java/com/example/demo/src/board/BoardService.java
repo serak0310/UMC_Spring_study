@@ -51,10 +51,10 @@ public class BoardService {
         }
     }
 
-    // 게시판 이름, 설명 수정(Patch)
-    public void modifyBoardInfo(PatchBoardReq patchBoardReq) throws BaseException {
+    // 게시판 이름, 설명 변경(Patch)
+    public void modifyBoard(PatchBoardReq patchBoardReq) throws BaseException {
         try {
-            int result = boardDao.modifyBoardInfo(patchBoardReq); // 해당 과정이 무사히 수행되면 True(1), 그렇지 않으면 False(0)입니다.
+            int result = boardDao.modifyBoard(patchBoardReq); // 해당 과정이 무사히 수행되면 True(1), 그렇지 않으면 False(0)입니다.
             if (result == 0) { // result값이 0이면 과정이 실패한 것이므로 에러 메서지를 보냅니다.
                 throw new BaseException(MODIFY_FAIL_BOARD);
             }

@@ -106,10 +106,10 @@ public class BoardController {
      */
     @ResponseBody
     @PatchMapping("/{boardIdx}")
-    public BaseResponse<String> modifyBoardInfo(@PathVariable("boardIdx") int boardIdx, @RequestBody Board board) {
+    public BaseResponse<String> modifyBoard(@PathVariable("boardIdx") int boardIdx, @RequestBody Board board) {
         try {
             PatchBoardReq patchBoardReq = new PatchBoardReq(boardIdx, board.getBoardName(), board.getBoardInfo());
-            boardService.modifyBoardInfo(patchBoardReq);
+            boardService.modifyBoard(patchBoardReq);
             String result = "게시판이 수정되었습니다.";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {

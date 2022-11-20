@@ -84,7 +84,7 @@ public class BoardDao {
     }
 
     // 게시판 이름, 설명 변경
-    public int modifyBoardInfo(PatchBoardReq patchBoardReq) {
+    public int modifyBoard(PatchBoardReq patchBoardReq) {
         String modifyBoardQuery = "update Board set boardName= ?, boardInfo = ? where boardIdx = ? "; // 해당 userIdx를 만족하는 User를 해당 nickname으로 변경한다.
         Object[] modifyBoardParams = new Object[]{patchBoardReq.getBoardName(), patchBoardReq.getBoardInfo(), patchBoardReq.getBoardIdx()}; // 주입될 값들(nickname, userIdx) 순
         return this.jdbcTemplate.update(modifyBoardQuery, modifyBoardParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)

@@ -2,9 +2,9 @@ package com.example.demo.src.post;
 
 import com.example.demo.src.board.BoardProvider;
 import com.example.demo.src.board.BoardService;
-import com.example.demo.src.board.model.GetBoardRes;
-import com.example.demo.src.board.model.PostBoardReq;
-import com.example.demo.src.board.model.PostBoardRes;
+import com.example.demo.src.board.model.*;
+import com.example.demo.src.post.model.PatchPostReq;
+import com.example.demo.src.post.model.Post;
 import com.example.demo.src.post.model.PostPostReq;
 import com.example.demo.src.post.model.PostPostRes;
 import com.example.demo.src.user.UserProvider;
@@ -54,6 +54,24 @@ public class PostController {
             PostPostRes postPostRes = postService.createPost(postPostReq);
             return new BaseResponse<>(postPostRes);
         } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 게시글 이름, 내용 변경 API
+     * [PATCH] /posts/:postIdx
+     */
+    @ResponseBody
+    @PatchMapping("/{postIdx}")
+    public BaseResponse<String> modifyPost(@PathVariable("postIdx") int postIdx, @RequestBody Post post) {
+        try {
+            PatchPostReq patchPostReq = new PatchPostReq(postIdx, post.getTitle(), post.getContent());
+            postService.modifyPost(patchPostReq);
+            String result = "게시글이 수정되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            System.out.println(exception);
             return new BaseResponse<>((exception.getStatus()));
         }
     }
