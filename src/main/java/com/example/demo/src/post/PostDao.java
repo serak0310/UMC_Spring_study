@@ -38,4 +38,11 @@ public class PostDao {
         Object[] modifyPostParams = new Object[]{patchPostReq.getTitle(), patchPostReq.getContent(), patchPostReq.getPostIdx()}; // 주입될 값들(nickname, userIdx) 순
         return this.jdbcTemplate.update(modifyPostQuery, modifyPostParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
     }
+
+    // 게시글 삭제
+    public int deletePost(int postIdx) {
+        String deletePostQuery = "update Post set status = 'D' where postIdx = ? "; // 해당 userIdx를 만족하는 User를 해당 nickname으로 변경한다.
+        Object[] deletePostParams = new Object[]{postIdx}; // 주입될 값들(nickname, userIdx) 순
+        return this.jdbcTemplate.update(deletePostQuery, deletePostParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
+    }
 }

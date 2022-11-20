@@ -75,4 +75,21 @@ public class PostController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 게시글 삭제 API
+     * [PATCH] /posts/:postIdx/status
+     */
+    @ResponseBody
+    @PatchMapping("/{postIdx}/status")
+    public BaseResponse<String> deletePost(@PathVariable("postIdx") int postIdx) {
+        try {
+            postService.deletePost(postIdx);
+            String result = "게시글이 삭제되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            System.out.println(exception);
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }
