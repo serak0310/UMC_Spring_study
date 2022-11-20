@@ -80,4 +80,11 @@ public class BoardDao {
                         rs.getString("boardInfo")), // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
                 getBoardsByBoardnameParams); // 해당 닉네임을 갖는 모든 User 정보를 얻기 위해 jdbcTemplate 함수(Query, 객체 매핑 정보, Params)의 결과 반환
     }
+
+    // 게시판 삭제
+    public int deleteBoard(int boardIdx) {
+        String deleteBoardQuery = "update Board set status = 'D' where boardIdx = ? "; // 해당 userIdx를 만족하는 User를 해당 nickname으로 변경한다.
+        Object[] deleteBoardParams = new Object[]{boardIdx}; // 주입될 값들(nickname, userIdx) 순
+        return this.jdbcTemplate.update(deleteBoardQuery, deleteBoardParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
+    }
 }

@@ -49,4 +49,16 @@ public class BoardService {
         }
     }
 
+    // 게시판 삭제(Patch)
+    public void deleteBoard(int boardIdx) throws BaseException {
+        try {
+            int result = boardDao.deleteBoard(boardIdx); // 해당 과정이 무사히 수행되면 True(1), 그렇지 않으면 False(0)입니다.
+            if (result == 0) { // result값이 0이면 과정이 실패한 것이므로 에러 메서지를 보냅니다.
+                throw new BaseException(DELETE_FAIL_BOARD);
+            }
+        } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }

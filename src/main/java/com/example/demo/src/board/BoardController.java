@@ -1,5 +1,6 @@
 package com.example.demo.src.board;
 
+import com.example.demo.src.board.model.Board;
 import com.example.demo.src.board.model.GetBoardRes;
 import com.example.demo.src.board.model.PostBoardReq;
 import com.example.demo.src.board.model.PostBoardRes;
@@ -98,6 +99,23 @@ public class BoardController {
             List<GetBoardRes> getBoardsRes = boardProvider.getBoardsByBoardname(boardName, listSize, pageNum);
             return new BaseResponse<>(getBoardsRes);
         } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 게시판 삭제 API
+     * [PATCH] /boards/:boardIdx/status
+     */
+    @ResponseBody
+    @PatchMapping("/{boardIdx}/status")
+    public BaseResponse<String> deleteBoard(@PathVariable("boardIdx") int boardIdx) {
+        try {
+            boardService.deleteBoard(boardIdx);
+            String result = "게시판이 삭제되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            System.out.println(exception);
             return new BaseResponse<>((exception.getStatus()));
         }
     }
