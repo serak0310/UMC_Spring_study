@@ -37,9 +37,9 @@ public class BoardProvider {
     // ******************************************************************************
 
     // Board 정보를 조회
-    public List<GetBoardRes> getBoards() throws BaseException {
+    public List<GetBoardRes> getBoards(int listSize, int pageNum) throws BaseException {
         try {
-            List<GetBoardRes> getBoardRes = boardDao.getBoards();
+            List<GetBoardRes> getBoardRes = boardDao.getBoards(listSize, pageNum);
             return getBoardRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
@@ -47,9 +47,9 @@ public class BoardProvider {
     }
 
     // 해당 boardName을 갖는 Board들의 정보 조회
-    public List<GetBoardRes> getBoardsByBoardname(String boardname) throws BaseException {
+    public List<GetBoardRes> getBoardsByBoardname(String boardname, int listSize, int pageNum) throws BaseException {
         try {
-            List<GetBoardRes> getBoardsRes = boardDao.getBoardsByBoardname(boardname);
+            List<GetBoardRes> getBoardsRes = boardDao.getBoardsByBoardname(boardname, listSize, pageNum);
             return getBoardsRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);

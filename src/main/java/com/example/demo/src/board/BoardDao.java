@@ -40,8 +40,9 @@ public class BoardDao {
         return this.jdbcTemplate.queryForObject(lastInserIdQuery, int.class); // 해당 쿼리문의 결과 마지막으로 삽인된 유저의 boardIdx번호를 반환한다.
     }
 
+    /* 페이징 전
     // Board 테이블에 존재하는 전체 게시판 정보 조회
-    public List<GetBoardRes> getBoards() {
+    public List<GetBoardRes> getBoards(int listSize, int pageNum) {
         String getUsersQuery = "select * from Board"; //User 테이블에 존재하는 모든 회원들의 정보를 조회하는 쿼리
         return this.jdbcTemplate.query(getUsersQuery,
                 (rs, rowNum) -> new GetBoardRes(
@@ -51,9 +52,24 @@ public class BoardDao {
                         rs.getString("boardInfo")) // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
         ); // 복수개의 게시판들을 얻기 위해 jdbcTemplate 함수(Query, 객체 매핑 정보)의 결과 반환(동적쿼리가 아니므로 Parmas부분이 없음)
     }
+    */
+    // Board 테이블에 존재하는 전체 게시판 정보 조회
+    public List<GetBoardRes> getBoards(int listSize, int pageNum) {
+        String getBoardQuery = "select * from Board limit ?, ?"; //User 테이블에 존재하는 모든 회원들의 정보를 조회하는 쿼리
+        Object[] getBoardParams = new Object[]{(pageNum-1)*listSize, listSize};
+        this.jdbcTemplate.update(getBoardQuery, getBoardParams);
+        return this.jdbcTemplate.query(getBoardQuery,
+                (rs, rowNum) -> new GetBoardRes(
+                        rs.getInt("boardIdx"),
+                        rs.getInt("userIdx"),
+                        rs.getString("boardName"),
+                        rs.getString("boardInfo")) // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
+        ); // 복수개의 게시판들을 얻기 위해 jdbcTemplate 함수(Query, 객체 매핑 정보)의 결과 반환(동적쿼리가 아니므로 Parmas부분이 없음)
+    }
+
 
     // 해당 boardname을 갖는 게시판 정보 조회
-    public List<GetBoardRes> getBoardsByBoardname(String boardname) {
+    public List<GetBoardRes> getBoardsByBoardname(String boardname, int listSize, int pageNum) {
         String getBoardsByBoardnameQuery = "select * from Board where boardName =?"; // 해당 이메일을 만족하는 유저를 조회하는 쿼리문
         String getBoardsByBoardnameParams = boardname;
         return this.jdbcTemplate.query(getBoardsByBoardnameQuery,
