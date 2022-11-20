@@ -1,9 +1,6 @@
 package com.example.demo.src.board;
 
-import com.example.demo.src.board.model.Board;
-import com.example.demo.src.board.model.GetBoardRes;
-import com.example.demo.src.board.model.PostBoardReq;
-import com.example.demo.src.board.model.PostBoardRes;
+import com.example.demo.src.board.model.*;
 import com.example.demo.src.user.UserProvider;
 import com.example.demo.src.user.UserService;
 import org.slf4j.Logger;
@@ -99,6 +96,24 @@ public class BoardController {
             List<GetBoardRes> getBoardsRes = boardProvider.getBoardsByBoardname(boardName, listSize, pageNum);
             return new BaseResponse<>(getBoardsRes);
         } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 게시판 이름, 설명 수정 API
+     * [PATCH] /boards/:boardIdx
+     */
+    @ResponseBody
+    @PatchMapping("/{boardIdx}")
+    public BaseResponse<String> modifyBoardInfo(@PathVariable("boardIdx") int boardIdx, @RequestBody Board board) {
+        try {
+            PatchBoardReq patchBoardReq = new PatchBoardReq(boardIdx, board.getBoardName(), board.getBoardInfo());
+            boardService.modifyBoardInfo(patchBoardReq);
+            String result = "게시판이 수정되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            System.out.println(exception);
             return new BaseResponse<>((exception.getStatus()));
         }
     }
