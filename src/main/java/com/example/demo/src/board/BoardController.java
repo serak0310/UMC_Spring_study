@@ -101,7 +101,7 @@ public class BoardController {
     }
 
     /**
-     * 게시판 이름, 설명 수정 API
+     * 게시판 이름, 설명 변경 API
      * [PATCH] /boards/:boardIdx
      */
     @ResponseBody
@@ -110,6 +110,24 @@ public class BoardController {
         try {
             PatchBoardReq patchBoardReq = new PatchBoardReq(boardIdx, board.getBoardName(), board.getBoardInfo());
             boardService.modifyBoardInfo(patchBoardReq);
+            String result = "게시판이 수정되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            System.out.println(exception);
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 게시판 소유자 변경 API
+     * [PATCH] /boards/:boardIdx/owner
+     */
+    @ResponseBody
+    @PatchMapping("/{boardIdx}/owner")
+    public BaseResponse<String> modifyBoardOwner(@PathVariable("boardIdx") int boardIdx, @RequestBody Board board) {
+        try {
+            PatchBoardOwnerReq patchBoardOwnerReq = new PatchBoardOwnerReq(boardIdx, board.getUserIdx());
+            boardService.modifyBoardOwner(patchBoardOwnerReq);
             String result = "게시판이 수정되었습니다.";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {

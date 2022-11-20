@@ -61,9 +61,11 @@ public enum BaseResponseStatus {
     PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
 
     //[PATCH] /boards/{boardIdx}/status
-    MODIFY_FAIL_BOARD(false,4015,"게시판 수정 실패"),
+    MODIFY_FAIL_BOARD(false,4015,"게시판 정보 변경 실패"),
+    //[PATCH] /boards/{boardIdx}/owner
+    MODIFY_FAIL_BOARDOWNER(false,4016,"게시판 소유자 변경 실패"),
     //[PATCH] /boards/{boardIdx}/status
-    DELETE_FAIL_BOARD(false,4016,"게시판 삭제 실패");
+    DELETE_FAIL_BOARD(false,4017,"게시판 삭제 실패");
 
 
     // 5000 : 필요시 만들어서 쓰세요
