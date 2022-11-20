@@ -14,6 +14,7 @@ import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 import static com.example.demo.utils.ValidationRegex.isRegexEmail;
+import static com.example.demo.utils.ValidationRegex.isRegexPassword;
 
 @RestController // Rest API 또는 WebAPI를 개발하기 위한 어노테이션. @Controller + @ResponseBody 를 합친것.
                 // @Controller      [Presentation Layer에서 Contoller를 명시하기 위해 사용]
@@ -74,6 +75,10 @@ public class UserController {
         if (postUserReq.getPassword().length() == 0) {
             return new BaseResponse<>(POST_USERS_EMPTY_PASSWORD);
         }
+        //비밀번호 정규표현: 입력받은 비밀번호가 숫자, 특문 각 1회 이상, 영문은 2개 이상 사용하여 8자리 이상 입력와 같은 형식인지 검사합니다. 형식이 올바르지 않다면 에러 메시지를 보냅니다.
+        if (!isRegexPassword(postUserReq.getPassword())) {
+            return new BaseResponse<>(POST_USERS_INVALID_PASSWORD);
+        }
         // nickname에 값이 존재하는지, 빈 값으로 요청하지는 않았는지 검사합니다. 빈값으로 요청했다면 에러 메시지를 보냅니다.
         if (postUserReq.getNickname().length() == 0) {
             return new BaseResponse<>(POST_USERS_EMPTY_NICKNAME);
@@ -96,6 +101,22 @@ public class UserController {
         try {
             // TODO: 로그인 값들에 대한 형식적인 validatin 처리해주셔야합니다!
             // TODO: 유저의 status ex) 비활성화된 유저, 탈퇴한 유저 등을 관리해주고 있다면 해당 부분에 대한 validation 처리도 해주셔야합니다.
+            // email에 값이 존재하는지, 빈 값으로 요청하지는 않았는지 검사합니다. 빈값으로 요청했다면 에러 메시지를 보냅니다.
+            if (postLoginReq.getEmail().length() == 0) {
+                return new BaseResponse<>(POST_USERS_EMPTY_EMAIL);
+            }
+            //이메일 정규표현: 입력받은 이메일이 email@domain.xxx와 같은 형식인지 검사합니다. 형식이 올바르지 않다면 에러 메시지를 보냅니다.
+            if (!isRegexEmail(postLoginReq.getEmail())) {
+                return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
+            }
+            // password에 값이 존재하는지, 빈 값으로 요청하지는 않았는지 검사합니다. 빈값으로 요청했다면 에러 메시지를 보냅니다.
+            if (postLoginReq.getPassword().length() == 0) {
+                return new BaseResponse<>(POST_USERS_EMPTY_PASSWORD);
+            }
+            //비밀번호 정규표현: 입력받은 비밀번호가 숫자, 특문 각 1회 이상, 영문은 2개 이상 사용하여 8자리 이상 입력와 같은 형식인지 검사합니다. 형식이 올바르지 않다면 에러 메시지를 보냅니다.
+            if (!isRegexPassword(postLoginReq.getPassword())) {
+                return new BaseResponse<>(POST_USERS_INVALID_PASSWORD);
+            }
             PostLoginRes postLoginRes = userProvider.logIn(postLoginReq);
             return new BaseResponse<>(postLoginRes);
         } catch (BaseException exception) {

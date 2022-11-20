@@ -13,7 +13,12 @@ public class ValidationRegex {
     }
 
     // 비밀번호 형식 체크
-
+    public static boolean isRegexPassword(String target){
+        String regex = "(?=.*\\d{1,50})(?=.*[~`!@#$%\\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,50}$";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(target);
+        return matcher.find();
+    }
     // 날짜 형식, 전화 번호 형식 등 여러 Regex 인터넷에 검색하면 나옴.
 }
 
