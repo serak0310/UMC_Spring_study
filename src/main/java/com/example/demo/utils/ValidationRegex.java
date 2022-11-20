@@ -19,6 +19,14 @@ public class ValidationRegex {
         Matcher matcher = pattern.matcher(target);
         return matcher.find();
     }
+
+    // 닉네임 형식 체크
+    public static boolean isRegexNickname(String target){
+        String regex = "^[0-9a-zA-Zㄱ-ㅎ가-힣]*$";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(target);
+        return matcher.find();
+    }
     // 날짜 형식, 전화 번호 형식 등 여러 Regex 인터넷에 검색하면 나옴.
 }
 

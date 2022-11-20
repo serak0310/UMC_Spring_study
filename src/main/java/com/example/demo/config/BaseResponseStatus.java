@@ -32,6 +32,7 @@ public enum BaseResponseStatus {
     POST_USERS_EMPTY_PASSWORD(false, 2018, "비밀번호를 입력해주세요."),
     POST_USERS_INVALID_PASSWORD(false, 2019, "비밀번호 형식은 숫자, 특문 각 1회 이상, 영문은 2개 이상 사용하여 8자리 이상이어야 합니다."),
     POST_USERS_EMPTY_NICKNAME(false, 2020, "닉네임을 입력해주세요."),
+    POST_USERS_INVALID_NICKNAME(false, 2021, "닉네임은 한글, 영문, 숫자만 가능합니다."),
 
 
 

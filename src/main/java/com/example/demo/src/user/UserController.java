@@ -13,8 +13,7 @@ import java.util.List;
 
 
 import static com.example.demo.config.BaseResponseStatus.*;
-import static com.example.demo.utils.ValidationRegex.isRegexEmail;
-import static com.example.demo.utils.ValidationRegex.isRegexPassword;
+import static com.example.demo.utils.ValidationRegex.*;
 
 @RestController // Rest API 또는 WebAPI를 개발하기 위한 어노테이션. @Controller + @ResponseBody 를 합친것.
                 // @Controller      [Presentation Layer에서 Contoller를 명시하기 위해 사용]
@@ -82,6 +81,10 @@ public class UserController {
         // nickname에 값이 존재하는지, 빈 값으로 요청하지는 않았는지 검사합니다. 빈값으로 요청했다면 에러 메시지를 보냅니다.
         if (postUserReq.getNickname().length() == 0) {
             return new BaseResponse<>(POST_USERS_EMPTY_NICKNAME);
+        }
+        // 닉네임 정규표현: 입력받은 닉네임이 숫자와 영문, 한글로만 이루어졌는지 검사합니다. 형식이 올바르지 않다면 에러 메시지를 보냅니다.
+        if (!isRegexNickname(postUserReq.getNickname())) {
+            return new BaseResponse<>(POST_USERS_INVALID_NICKNAME);
         }
         try {
             PostUserRes postUserRes = userService.createUser(postUserReq);
